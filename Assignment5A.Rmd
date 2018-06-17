@@ -1,0 +1,153 @@
+##Assignment 5
+### Doing Data Science Tidy Data
+### Question 
+
+#### Installing the Necessary Packages
+
+```{r}
+install.packages("data.table",repos = "http://cran.us.r-project.org")
+install.packages("stringer",repos = "http://cran.us.r-project.org")
+library(stringr)
+library(data.table)
+
+```
+#### Importing the yob 2016 to R
+#### Q1a
+
+```{r}
+URL <- "https://www.ssa.gov/oact/babynames/state/namesbystate.zip"
+temp <- tempfile()
+download.file(URL,temp)
+
+```
+```{r,include=FALSE}
+
+yob2016 <- read.table("yob2016.txt", sep=",", header=TRUE)
+```
+```{r}
+yob2016 <- na.omit(yob2016)
+```
+
+
+#### Q1b - Display the summary of the Structure of df 
+
+```{r,include=FALSE}
+summary(yob2016)
+```
+#### Q1c 
+
+```{r,include=FALSE}
+sum(is.na(yob2016))
+
+names(yob2016)[1] <- paste("Name")
+names(yob2016)[2] <- paste("Gender")
+names(yob2016)[3] <- paste(" No_Of_Children")
+
+yob2016
+
+```
+```{r}
+dim(yob2016)
+names(yob2016)
+str(yob2016)
+
+```
+
+```{r}
+#install.packages("dplyr",repos = "http://cran.us.r-project.org")
+#library(dplyr)
+```
+
+
+
+
+#### Q2
+
+```{r}
+
+URL1 <- "https://www.ssa.gov/oact/babynames/state/namesbystate.zip"
+temp <- tempfile()
+download.file(URL1,temp)
+
+```
+
+```{r}
+
+yob2015 <- read.table("yob2015.txt", sep=",", header=TRUE)
+
+yob2015 <- na.omit(yob2015)
+```
+
+```{r}
+dim(yob2015)
+names(yob2015)
+str(yob2015)
+
+
+```
+```{r,include=FALSE}
+yob2015
+```
+
+
+
+```{r,include=FALSE}
+sum(is.na(yob2015))
+
+names(yob2015)[1] <- paste("Name")
+names(yob2015)[2] <- paste("Gender")
+names(yob2015)[3] <- paste(" No_Of_Children")
+
+yob2015
+
+```
+
+# merge two data frames by ID
+
+
+```{r,include=FALSE }
+
+final <- merge(yob2015,yob2016,by= "Name")
+final
+
+```
+
+
+```{r}
+dim(final)
+names(final)
+str(final)
+
+```
+
+
+
+
+
+#### Q3
+
+##3a 
+
+```{r,include=FALSE }
+sum(is.na(final))
+
+final <- na.omit(final)
+
+final$Total <- final[,3] + final[,5]
+head(final)
+
+```
+
+```{r}
+final2<-final[order(-final$Total),]
+
+
+```
+
+```{r,include=FALSE}
+final2
+x<-final2[1:10,]
+x
+```
+
+
